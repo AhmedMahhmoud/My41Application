@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string-array name="activity">
+        <item>Lightly Active</item>
+        <item>Moderately Active</item>
+        <item>Very Active</item>
+    </string-array>
+    <string-array name="plan">
+        <item>Loss Weight</item>
+        <item>Maintain</item>
+        <item>Gain Weight</item>
+    </string-array>
+    <string-array name="type">
+        <item>Anything</item>
+        <item>Vegetarian</item>
+    </string-array>
+</resources>
