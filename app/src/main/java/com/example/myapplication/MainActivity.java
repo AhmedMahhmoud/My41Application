@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     InputStream inputStream;
     //loss=0 main=1 gain=2
     //male=0 female=1
-    //any=0 veg=1 meat=2
+    //any=0 veg=1
     Map<Integer,ArrayList<Integer>>clusters=new HashMap<Integer,ArrayList<Integer>>();
     private EditText name,email,pass,age,weghit,height;
     private Spinner foodtype,activ,plan;
@@ -48,9 +48,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        List<String>Meat = new ArrayList<>();
-        List<String>Chicken = new ArrayList<>();
 
+        // initialize Cluster
+        int clusterID=0;
+        for (int i=0;i<3;i++){ //plan loss=0 main=1 gain=2
+
+            for (int k=0;k<2;k++){ //type any=0 veg=1
+                ArrayList<Integer> values = new ArrayList<Integer>(Arrays.asList(i,k));
+                clusters.put(clusterID,values);
+                clusterID++;
+            }
+
+        }
+        for(int i=0;i<6;i++){
+            ArrayList<Integer> list=clusters.get(i);
+            Log.v("Main","key="+i + "     Values"+list);
+        }
+
+        //==========================================================================================
+
+        //load Food Data
         List<String[]> mylist=new ArrayList<>();
         inputStream=getResources().openRawResource(R.raw.www);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -74,14 +91,12 @@ public class MainActivity extends AppCompatActivity {
             throw new  RuntimeException("Error"+ex);
         }
 
-        //Log.e("data", String.valueOf(mylist.get(0)[0]));
+        //==========================================================================================
+
+        //add food to Cluster
         int planval=-1;
         int typeval=-1;
         for (int i=1;i<mylist.size();i++){
-            /*String name=mylist.get(i)[0];
-            String calo=mylist.get(i)[1];
-            String categ=mylist.get(i)[2];
-            String meal=mylist.get(i)[3]; //break=0 launch=1 dinn=2*/
             String plan=mylist.get(i)[4]; //loss=0 man=1 gain=2
             String veg=mylist.get(i)[5];  //any=0 //veg=1
 
@@ -96,41 +111,20 @@ public class MainActivity extends AppCompatActivity {
                 if (Temp=='L')
                 {
                     planval=0;
-                    //calccat 0,type
-                    //addtoclus
-
-                    //Log.v("Main","cat "+planval+typeval);
-
                     Log.v("Main","cat "+findcluster(planval,typeval));
                 }
               else  if (Temp=='G')
                 {
                     planval=2;
-                    //calccat //2 type
-                    //addtocat
-                    //Log.v("Main","cat "+planval+typeval);
                     Log.v("Main","cat "+findcluster(planval,typeval));
                 }
             }
 
-            findcluster(1,typeval);
+            Log.v("Main","cat "+findcluster(1,typeval));
 
         }
 
-        int clusterID=0;
-        for (int i=0;i<3;i++){ //plan
 
-                for (int k=0;k<2;k++){ //type
-                    ArrayList<Integer> values = new ArrayList<Integer>(Arrays.asList(i,k));
-                    clusters.put(clusterID,values);
-                    clusterID++;
-                }
-
-        }
-        for(int i=0;i<6;i++){
-            ArrayList<Integer> list=clusters.get(i);
-            Log.v("Main","key="+i + "     Values"+list);
-        }
 
         name=(EditText)findViewById(R.id.editText);
         email=(EditText)findViewById(R.id.editText2);
